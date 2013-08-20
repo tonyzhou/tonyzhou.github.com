@@ -68,8 +68,8 @@
         
 </footer><!-- /.post-info -->      <p>从2.6版本开始，Python引入了一种新的格式化输出字符串的方式：string.format，这种格式化方式和老的%tuple方式有所不同。 有了这个string.format，我们能更灵活的输出格式化字符串。</p>
 <h2>string.format使用方式</h2>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span><span class="n">print</span> <span class="err">&#39;</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="n">and</span> <span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="err">&#39;</span><span class="n">spam</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">eggs</span><span class="err">&#39;</span><span class="p">)</span>
-<span class="n">spam</span> <span class="n">and</span> <span class="n">eggs</span>
+<div class="highlight"><pre>    <span class="o">&gt;&gt;&gt;</span><span class="k">print</span> <span class="s">&#39;{0} and {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;eggs&#39;</span><span class="p">)</span>
+    <span class="n">spam</span> <span class="ow">and</span> <span class="n">eggs</span>
 </pre></div>
 
 
@@ -97,24 +97,21 @@
 </li>
 <li>
 <p>format_spec以:开头，表示参数的输出格式，详细定义如下：</p>
-<div class="highlight"><pre><span class="n">format_spec</span> <span class="o">::=</span>  <span class="p">[[</span><span class="n">fill</span><span class="p">]</span><span class="n">align</span><span class="p">][</span><span class="n">sign</span><span class="p">][</span><span class="err">#</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">width</span><span class="p">][,][.</span><span class="n">precision</span><span class="p">][</span><span class="n">type</span><span class="p">]</span>
-<span class="n">fill</span>        <span class="o">::=</span>  <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">a</span> <span class="n">character</span> <span class="n">other</span> <span class="n">than</span> <span class="sc">&#39;{&#39;</span> <span class="n">or</span> <span class="sc">&#39;}&#39;</span><span class="err">\</span><span class="o">&gt;</span>
-<span class="n">align</span>       <span class="o">::=</span>  <span class="s">&quot;&lt;&quot;</span> <span class="o">|</span> <span class="s">&quot;&gt;&quot;</span> <span class="o">|</span> <span class="s">&quot;=&quot;</span> <span class="o">|</span> <span class="s">&quot;^&quot;</span>
-<span class="n">sign</span>        <span class="o">::=</span>  <span class="s">&quot;+&quot;</span> <span class="o">|</span> <span class="s">&quot;-&quot;</span> <span class="o">|</span> <span class="s">&quot; &quot;</span>
-<span class="n">width</span>       <span class="o">::=</span>  <span class="n">integer</span>
-<span class="n">precision</span>   <span class="o">::=</span>  <span class="n">integer</span>
-<span class="n">type</span>        <span class="o">::=</span>  <span class="s">&quot;b&quot;</span> <span class="o">|</span> <span class="s">&quot;c&quot;</span> <span class="o">|</span> <span class="s">&quot;d&quot;</span> <span class="o">|</span> <span class="s">&quot;e&quot;</span> <span class="o">|</span> <span class="s">&quot;E&quot;</span> <span class="o">|</span> <span class="s">&quot;f&quot;</span> <span class="o">|</span> <span class="s">&quot;F&quot;</span> <span class="o">|</span> <span class="s">&quot;g&quot;</span> <span class="o">|</span> <span class="s">&quot;G&quot;</span> <span class="o">|</span> <span class="s">&quot;n&quot;</span> <span class="o">|</span> <span class="s">&quot;o&quot;</span> <span class="o">|</span> <span class="s">&quot;s&quot;</span> <span class="o">|</span> <span class="s">&quot;x&quot;</span> <span class="o">|</span> <span class="s">&quot;X&quot;</span> <span class="o">|</span> <span class="s">&quot;%&quot;</span>
-</pre></div>
-
-
+<p>format_spec ::=  [[fill]align][sign][#][0][width][,][.precision][type]
+fill        ::=  &lt;a character other than '{' or '}'>
+align       ::=  "&lt;" | "&gt;" | "=" | "^"
+sign        ::=  "+" | "-" | " "
+width       ::=  integer
+precision   ::=  integer
+type        ::=  "b" | "c" | "d" | "e" | "E" | "f" | "F" | "g" | "G" | "n" | "o" | "s" | "x" | "X" | "%"</p>
 </li>
 </ul>
 <p>详细的格式化输出例子，请见：http://docs.python.org/3/library/string.html#format-examples</p>
 <p>特别留意datetime的输出格式：</p>
-<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">import</span> <span class="n">datetime</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">58</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="err">&#39;</span><span class="p">{</span><span class="o">:%</span><span class="n">Y</span><span class="o">-%</span><span class="n">m</span><span class="o">-%</span><span class="n">d</span> <span class="o">%</span><span class="n">H</span><span class="o">:%</span><span class="n">M</span><span class="o">:%</span><span class="n">S</span><span class="p">}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="err">&#39;</span><span class="mi">2010</span><span class="o">-</span><span class="mo">07</span><span class="o">-</span><span class="mo">04</span> <span class="mi">12</span><span class="o">:</span><span class="mi">15</span><span class="o">:</span><span class="mi">58</span><span class="err">&#39;</span>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">58</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&#39;{:%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="s">&#39;2010-07-04 12:15:58&#39;</span>
 </pre></div>
 
 
@@ -122,18 +119,18 @@
 <p>Python官方文档将string.format称为fancier output formatting, 毫无疑问string.format比%tuple花哨很多， 比如：</p>
 <p>string.format支持argment的reuse：</p>
 <div class="highlight"><pre><span class="n">tu</span> <span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">22222</span><span class="p">,</span><span class="mi">103</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">print</span><span class="err">&#39;</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="p">{</span><span class="mi">2</span><span class="p">}</span> <span class="p">{</span><span class="mi">1</span><span class="p">}</span> <span class="p">{</span><span class="mi">2</span><span class="p">}</span> <span class="p">{</span><span class="mi">3</span><span class="p">}</span> <span class="p">{</span><span class="mi">2</span><span class="p">}</span> <span class="p">{</span><span class="mi">4</span><span class="p">}</span> <span class="p">{</span><span class="mi">2</span><span class="p">}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">tu</span><span class="p">)</span>
+<span class="k">print</span><span class="s">&#39;{0} {2} {1} {2} {3} {2} {4} {2}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">tu</span><span class="p">)</span>
 </pre></div>
 
 
 <p>string.format是一个函数，可以在用作其它函数的参数，从而有更加灵活的用法：</p>
-<div class="highlight"><pre><span class="n">from</span> <span class="n">datetime</span> <span class="n">import</span> <span class="n">datetime</span><span class="p">,</span><span class="n">timedelta</span>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span><span class="n">timedelta</span>
 
 <span class="n">once_upon_a_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">delta</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>  <span class="n">minutes</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-<span class="n">gen</span> <span class="o">=</span><span class="p">(</span><span class="n">once_upon_a_time</span> <span class="o">+</span><span class="n">x</span><span class="o">*</span><span class="n">delta</span> <span class="k">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
-<span class="n">print</span><span class="sc">&#39;\n&#39;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">map</span><span class="p">(</span><span class="err">&#39;</span><span class="p">{</span><span class="o">:%</span><span class="n">Y</span><span class="o">-%</span><span class="n">m</span><span class="o">-%</span><span class="n">d</span> <span class="o">%</span><span class="n">H</span><span class="o">:%</span><span class="n">M</span><span class="o">:%</span><span class="n">S</span><span class="p">}</span><span class="err">&#39;</span><span class="p">.</span><span class="n">format</span><span class="p">,</span> <span class="n">gen</span><span class="p">))</span>
+<span class="n">gen</span> <span class="o">=</span><span class="p">(</span><span class="n">once_upon_a_time</span> <span class="o">+</span><span class="n">x</span><span class="o">*</span><span class="n">delta</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="k">print</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="s">&#39;{:%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="n">gen</span><span class="p">))</span>
 </pre></div>
 
 
