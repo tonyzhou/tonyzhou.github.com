@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Python with语句和context manager | H.B.Zhou's blog</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/bootstrap-responsive.min.css" type="text/css" />
+
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css" type="text/css" />
+                <link href="http://localhost:8000/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="H.B.Zhou's blog Atom Feed" />
+                        <link href="http://localhost:8000/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="H.B.Zhou's blog RSS Feed" />
+        </head>
+
+<body id="index">
+<a class="hidden-phone" href="http://github.com/tonyzhou/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" />
+</a>
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <header id="banner" >
+                <h1>
+                    <a href="http://localhost:8000/">H.B.Zhou's blog </a>
+                </h1>
+                <nav class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="nav">
+                                                    <li><a href="index.html">Blog</a></li>
+                                                    <li><a href="archives.html">Archives</a></li>
+                                                                                                                                                </ul>
+
+                                            </div>
+                </nav>
+            </header><!-- /#banner -->
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span10 offset1">
+            <div class="row-fluid">
+                <div class="span10">
+                    <section  >
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://localhost:8000/posts/2013/08/07/python with statement and context manager" rel="bookmark"
+           title="Permalink to Python with语句和context manager">Python with语句和context manager</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <address class="vcard author">
+        by <a class="url fn" href="http://localhost:8000/author/tony-zhou.html">Tony Zhou</a>
+    </address>
+    
+    in <a href="http://localhost:8000/category/python.html">Python</a>
+
+    on 2013-08-07
+
+            |
+        tags:         <a href="http://localhost:8000/tag/python.html">python</a>
+            
+    
+    
+        
+</footer><!-- /.post-info -->      <h2>一 Python with语句的引入</h2>
+<p>资源管理是编码的一大话题， 很多语言都有专门的特性用于保证资源的合理创建和释放。比如利用C++的确定性析构， 封装一个RAII对象： 用对象的生命周期来控制资源的释放。关于RAII，详细的介绍请见：http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization</p>
+<p>对Python来说，管理资源分配和释放常用的做法有try/finally:</p>
+<div class="highlight"><pre><span class="n">set</span> <span class="n">things</span> <span class="n">up</span>
+<span class="nl">try:</span>
+    <span class="k">do</span> <span class="n">something</span>
+<span class="nl">finally:</span>
+    <span class="n">tear</span> <span class="n">things</span> <span class="n">down</span>
+</pre></div>
+
+
+<p>try/finally块经常出现在编码中，因此有必要考虑复用这部分功能，可以用一个函数封装：</p>
+<div class="highlight"><pre><span class="nx">def</span> <span class="nx">controlled_execution</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span><span class="o">:</span>
+    <span class="nx">set</span> <span class="nx">things</span> <span class="nx">up</span>
+    <span class="k">try</span><span class="o">:</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">thing</span><span class="p">)</span>
+    <span class="k">finally</span><span class="o">:</span>
+        <span class="nx">tear</span> <span class="nx">things</span> <span class="nx">down</span>
+
+<span class="nx">def</span> <span class="nx">my_function</span><span class="p">(</span><span class="nx">thing</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">do</span> <span class="nx">something</span>
+
+<span class="nx">controlled_execution</span><span class="p">(</span><span class="nx">my_function</span><span class="p">)</span>
+</pre></div>
+
+
+<p>这种封装方式有很多弊端： 执行体(do something部分)被放在一个函数中，作用域被隔离了，不能使用当前作用域的局部变量， 非常不方便。 进一步优化，可以利用python的generator解决作用域隔离问题：</p>
+<div class="highlight"><pre><span class="n">def</span> <span class="n">controlled_execution</span><span class="p">()</span><span class="o">:</span>
+    <span class="n">set</span> <span class="n">things</span> <span class="n">up</span>
+    <span class="nl">try:</span>
+        <span class="n">yield</span> <span class="n">thing</span>
+    <span class="nl">finally:</span>
+        <span class="n">tear</span> <span class="n">things</span> <span class="n">down</span>
+
+<span class="k">for</span> <span class="n">thing</span> <span class="n">in</span> <span class="n">controlled_execution</span><span class="p">()</span><span class="o">:</span>
+    <span class="k">do</span> <span class="n">something</span> <span class="n">with</span> <span class="n">thing</span>
+</pre></div>
+
+
+<p>这样做虽然解决了问题，但看起来还是非常怪异，因为执行体(do something部分)只需要执行一次，我们却把它放入一个循环中，这样不利于代码的理解。
+对此，python2.5中引入了新特性——context manager 和 with statement， 使用类去封装资源的分配和释放操作，用with语句去划定资源的生存范围。</p>
+<div class="highlight"><pre><span class="n">class</span> <span class="n">controlled_execution</span><span class="o">:</span>
+    <span class="n">def</span> <span class="n">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">set</span> <span class="n">things</span> <span class="n">up</span>
+        <span class="k">return</span> <span class="n">thing</span>
+    <span class="n">def</span> <span class="n">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span><span class="o">:</span>
+        <span class="n">tear</span> <span class="n">things</span> <span class="n">down</span>
+
+<span class="n">with</span> <span class="n">controlled_execution</span><span class="p">()</span> <span class="n">as</span> <span class="n">thing</span><span class="o">:</span>
+     <span class="n">some</span> <span class="n">code</span>
+</pre></div>
+
+
+<p>with的执行流程是这样的： 每次执行controller_execution，会返回一个对象，这个对象被赋给thing，with语句会对thing自动执行一次__enter__，在with区块执行完毕之后，<strong>exit__也会被自动调用。因此能保证资源的合理初始化和释放。
+在这里，thing对象被称作context managers， 它代表了with块运行时上下文信息。controller_execution类被称作context manager class，它必须实现__enter</strong>/__exit__函数对(context manager protocol)。</p>
+<h2>二 更多用法</h2>
+<p>除了context manager protocol， python还提供了contextlib，这是一种更简单的定义context manager的方法，具体用法请查看：http://docs.python.org/2/library/contextlib.html#module-contextlib</p>
+<h2>三 附录</h2>
+<p>effbot博客——理解pythonwith语句： http://effbot.org/zone/python-with-statement.htm</p>
+<p>PEP343——with语句：http://www.python.org/dev/peps/pep-0343/</p>
+<p>python contextlib文档： http://docs.python.org/2/library/contextlib.html#module-contextlib</p>
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
+                </div>
+                <div class="span2">
+                    <section id="sidebar">
+                                                <div>
+                                <h2>Links</h2>
+                                <ul>
+                                                                    <li><a href="http://getpelican.com/">Pelican</a></li>
+                                                                    <li><a href="http://python.org/">Python.org</a></li>
+                                                                    <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                                                                    <li><a href="http://9pm.me">Diving for fun</a></li>
+                                                                </ul>
+                            </div><!-- /.Links -->
+                                                                    <div>
+                                <h2>Social</h2>
+                                <ul>
+                                    <li><a href="http://localhost:8000/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                                                                        <li><a href="http://localhost:8000/feeds/all.rss.xml" type="application/rss+xml" rel="alternate">rss feed</a></li>
+                                    
+                                                                    <li><a href="http://github.com/tonyzhou">github</a></li>
+                                                                </ul>
+                            </div><!-- /.social -->
+                                        </section><!-- /#sidebar -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="site-footer">
+        <div class="row-fluid">
+            <div class="span10 offset1">
+                <address>
+                    <p>
+                        This blog is proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                    </p>
+                    <p>
+                        <a href="http://github.com/jsliang/pelican-fresh/">Fresh</a> is a responsive theme designed by <a href="http://jsliang.com/">jsliang</a>.
+                        Special thanks to <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a> and <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a>.
+                    </p>
+                </address>
+            </div>
+        </div>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="http://localhost:8000/theme/js/bootstrap.min.js"></script>
+</body>
+</html>
