@@ -64,6 +64,8 @@
                 <a href="http://tonyzhou.github.io/tag/python.html">python</a>
             
     
+            |
+        <a href="http://tonyzhou.github.io/posts/2013/07/11/build-your-blog-with-pelican#disqus_thread">comments</a>
     
         
 </footer><!-- /.post-info -->      <p>使用wordpress搭建博客网站是一种常规的做法，但也是一种浪费资源的做法。下面介绍如何使用静态博客生成器pelican搭建个人博客。</p>
@@ -172,6 +174,18 @@ server，并运行一段PHP代码，读几次数据库. 换个角度来看，对
 <li>加上评论功能</li>
 </ul>
     </div><!-- /.entry-content -->
+        <div class="comments">
+      <h2>Comments</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_identifier = "posts/2013/07/11/build-your-blog-with-pelican";
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://hbzhousblog.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </div>
     
   </article>
 </section>
@@ -218,6 +232,15 @@ server，并运行一段PHP代码，读几次数据库. 换个角度来看，对
         </div>
     </footer>
 
+<script type="text/javascript">
+    var disqus_shortname = 'hbzhousblog';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="http://tonyzhou.github.io/theme/js/bootstrap.min.js"></script>
 </body>
