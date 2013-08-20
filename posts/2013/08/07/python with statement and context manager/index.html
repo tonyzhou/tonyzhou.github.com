@@ -66,7 +66,7 @@
         <a href="http://tonyzhou.github.io/posts/2013/08/07/python with statement and context manager#disqus_thread">comments</a>
     
         
-</footer><!-- /.post-info -->      <h2>一 Python with语句的引入</h2>
+</footer><!-- /.post-info -->      <h2>Python with语句的引入</h2>
 <p>资源管理是编码的一大话题， 很多语言都有专门的特性用于保证资源的合理创建和释放。比如利用C++的确定性析构， 封装一个RAII对象： 用对象的生命周期来控制资源的释放。关于RAII，详细的介绍请见：http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization</p>
 <p>对Python来说，管理资源分配和释放常用的做法有try/finally:</p>
 <div class="highlight"><pre><span class="nb">set</span> <span class="n">things</span> <span class="n">up</span>
@@ -121,12 +121,20 @@
 
 <p>with的执行流程是这样的： 每次执行controller_execution，会返回一个对象，这个对象被赋给thing，with语句会对thing自动执行一次__enter__，在with区块执行完毕之后，<strong>exit__也会被自动调用。因此能保证资源的合理初始化和释放。
 在这里，thing对象被称作context managers， 它代表了with块运行时上下文信息。controller_execution类被称作context manager class，它必须实现__enter</strong>/__exit__函数对(context manager protocol)。</p>
-<h2>二 更多用法</h2>
+<h2>更多用法</h2>
 <p>除了context manager protocol， python还提供了contextlib，这是一种更简单的定义context manager的方法，具体用法请查看：http://docs.python.org/2/library/contextlib.html#module-contextlib</p>
-<h2>三 附录</h2>
+<h2>附录</h2>
+<ul>
+<li>
 <p>effbot博客——<a href="http://effbot.org/zone/python-with-statement.htm">理解pythonwith语句</a></p>
+</li>
+<li>
 <p>PEP343——<a href="http://www.python.org/dev/peps/pep-0343/">with语句</a></p>
+</li>
+<li>
 <p>python <a href="http://docs.python.org/2/library/contextlib.html#module-contextlib">contextlib文档</a></p>
+</li>
+</ul>
     </div><!-- /.entry-content -->
         <div class="comments">
       <h2>Comments</h2>
